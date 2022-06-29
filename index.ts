@@ -6,7 +6,7 @@ export { router } from "./src/router";
 export { methodENUM as method } from "./src/interface/method";
 export { response } from "./src/interface/response";
 export { request } from "./src/interface/request";
-export { ChainInterrupted } from "./src/interface";
+export { ChainInterrupted } from "./src/interface/index";
 export * as platformAdapater from "./src/platform/export";
 
 export { rootRouter };

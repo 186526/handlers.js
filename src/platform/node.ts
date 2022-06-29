@@ -1,6 +1,6 @@
-import { platformAdapater } from ".";
+import { platformAdapater } from "./index";
 import { request, response } from "../interface";
-import { router } from "../../";
+import { router } from "../router";
 import { headers } from "../interface/headers";
 
 import http from "http";
@@ -10,7 +10,6 @@ export class NodePlatformAdapter<T = any, K = any> implements platformAdapater {
 
 	constructor(router: router<T, K>) {
 		this.router = router;
-		return this;
 	}
 
 	async listen(port: number): Promise<void> {

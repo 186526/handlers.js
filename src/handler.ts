@@ -1,4 +1,4 @@
-import { method, request, responder, response } from "./interface";
+import { method, request, responder, response } from "./interface/index";
 
 export class handler<RequestCustomType, ResponseCustomType> {
 	public responders: responder<RequestCustomType, ResponseCustomType>[];

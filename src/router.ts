@@ -6,15 +6,18 @@ import {
 	ChainInterrupted,
 	AllMismatchInterrupted,
 	responder,
+	method,
 } from "./interface/index";
 import { defaultHeaders } from "./interface/response";
 import route from "./route";
-import { method, methodENUM } from "./interface/method";
+import { methodENUM } from "./interface/method";
 import {
 	createPlatformAdapater,
 	platformAdapaterConstructor,
 	platformAdapater,
-} from "./platform";
+} from "./platform/index";
+import { platformAdapaterMapping } from "./platform/export";
+import { platform } from "./lib";
 
 export class router<K = any, V = any> {
 	public routes: route[];
@@ -207,5 +210,16 @@ export class rootRouter<K = any, V = any> extends router<K, V> {
 	useAdapater(adapater: platformAdapaterConstructor): this {
 		this.adapater = createPlatformAdapater(adapater, this);
 		return this;
+	}
+	useMappingAdapter(
+		mapping: { [platform: string]: platformAdapaterConstructor } = platformAdapaterMapping
+	): this {
+		if(mapping[platform] == undefined) throw new Error("Platform not found in mapping");
+		else this.useAdapater(mapping[platform]);
+		return this;
+	}
+	listen(port: number): void {
+		if (this.adapater == null) throw new Error("No platform adapter set");
+		this.adapater.listen(port);
 	}
 }

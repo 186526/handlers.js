@@ -1,16 +1,18 @@
-import * as handlerJS from "..";
+import {
+	rootRouter,
+	method,
+	handler,
+	route,
+	response,
+	ChainInterrupted,
+} from "../index";
 import errorHandler from "./errorHandler";
 
-interface requestType {
-	hood: boolean;
-	id: number;
-}
-
-const App = new handlerJS.rootRouter<requestType, any>();
+const App = new rootRouter<any, any>();
 
 App.binding(
 	"/(.*)",
-	new handlerJS.handler("ANY", [
+	new handler("ANY", [
 		async (request, response) => {
 			console.log(request);
 			return undefined;
@@ -26,29 +28,29 @@ App.binding(
 			new Promise((resolve) => {
 				console.log("Hello World!");
 				resolve("Hello World!");
-				throw handlerJS.ChainInterrupted;
+				throw ChainInterrupted;
 			})
 	)
 );
 
 App.route("/v1/(.*)")
 	.add(
-		new handlerJS.route(
+		new route(
 			["/echo", "/echo/(.*)"],
 			[
-				new handlerJS.handler(handlerJS.method["GET"], [
-					async (request, response) => {
-						response = response ?? new handlerJS.response("");
-						response?.headers.set("Hello", "World");
-						response.body = request.url.pathname;
-						return response;
+				new handler(method["GET"], [
+					async (requestMessage, responseMessage) => {
+						responseMessage = responseMessage ?? new response("");
+						responseMessage?.headers.set("Hello", "World");
+						responseMessage.body = requestMessage.url.pathname;
+						return responseMessage;
 					},
 				]),
-				new handlerJS.handler(handlerJS.method["POST"], [
-					async (request, response) => {
-						response = response ?? new handlerJS.response("");
-						response.body = request.body;
-						return response;
+				new handler(method["POST"], [
+					async (requestMessage, responseMessage) => {
+						responseMessage = responseMessage ?? new response("");
+						responseMessage.body = requestMessage.body;
+						return responseMessage;
 					},
 				]),
 			]
@@ -56,11 +58,13 @@ App.route("/v1/(.*)")
 	)
 	.binding(
 		"/error",
-		App.create(handlerJS.method["ANY"], async () => {
+		App.create(method["ANY"], async () => {
 			throw new Error("Nothing will happen here.");
 		})
 	)
 	.useErrorResponder(errorHandler);
 
-App.useAdapater(handlerJS.platformAdapater.NodePlatformAdapter);
-App.adapater.listen(8080);
+App.useMappingAdapter();
+App.listen(8080);
+
+export default App;

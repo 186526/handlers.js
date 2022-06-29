@@ -9,7 +9,7 @@ export class defaultHeaders extends headers {
 			this.set("Content-Type", "text/plain; charset=utf-8");
 		this.set(
 			"Server",
-			`Handlers.JS/${packageJSON.version} ${platform}/${version}`
+			`Handlers.js/${packageJSON.version} ${platform}/${version}`
 		);
 	}
 }
