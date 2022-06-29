@@ -6,10 +6,10 @@ export class defaultHeaders extends headers {
 	constructor(headers: { [key: string]: string } = {}) {
 		super(headers);
 		if (!this.has("Content-Type"))
-			this.set("Content-Type", "plain/text; charset=utf-8");
+			this.set("Content-Type", "text/plain; charset=utf-8");
 		this.set(
 			"Server",
-			`Handler.JS/${packageJSON.version} ${platform}/${version}`
+			`Handlers.JS/${packageJSON.version} ${platform}/${version}`
 		);
 	}
 }

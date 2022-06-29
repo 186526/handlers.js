@@ -1,4 +1,4 @@
-export enum method {
+export enum methodENUM {
 	/**
 	 * The `CONNECT` method establishes a tunnel to the server identified by the
 	 * target resource.
@@ -55,4 +55,7 @@ export enum method {
 	 */
 	ANY = "ANY",
 }
+
+export type method = methodENUM | string;
+
 export default method;

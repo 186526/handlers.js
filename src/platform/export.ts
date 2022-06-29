@@ -1,0 +1,1 @@
+export { NodePlatformAdapter } from "./node";

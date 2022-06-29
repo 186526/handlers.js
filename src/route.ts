@@ -12,11 +12,11 @@ interface matchedStatus {
 
 export class route {
 	public paths: path[];
-	public handler: handler<any, any>;
+	public handlers: handler<any, any>[];
 
-	constructor(paths: path[], handler: handler<any, any>) {
+	constructor(paths: path[], handlers: handler<any, any>[]) {
 		this.paths = paths;
-		this.handler = handler;
+		this.handlers = handlers;
 	}
 	async exec(path: string): Promise<matchedStatus> {
 		let Answer = await Promise.all<Promise<matchedStatus>>(

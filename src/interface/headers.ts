@@ -3,7 +3,7 @@ export class headers {
 	public headers: { [key: string]: string } = {};
 	constructor(headers: { [key: string]: string }) {
 		this.headers = {};
-		Object.keys(this.headers).forEach((key) => {
+		Object.keys(headers).forEach((key) => {
 			this.headers[lib.firstUpperCase(key)] = headers[key];
 		});
 	}
@@ -21,6 +21,11 @@ export class headers {
 	}
 	toObject() {
 		return this.headers;
+	}
+	forEach(func: (key: string, value: string) => any) {
+		Object.keys(this.headers).forEach((key) => {
+			func(key, this.headers[key]);
+		})
 	}
 }
 export default headers;
