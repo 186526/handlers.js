@@ -1,12 +1,20 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 
-const path = require("path");
+import path from "path";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   output: {
     path: path.resolve(__dirname, "dist"),
+    chunkFormat: "module",
+    library: {
+      type: 'module',
+    },
   },
   plugins: [
     // Add your plugins here
@@ -30,9 +38,12 @@ const config = {
       "http": false
     }
   },
+  experiments: {
+    outputModule: true,
+  },
 };
 
-module.exports = () => {
+export default () => {
   if (isProduction) {
     config.mode = "production";
     config.entry = "./index.ts";
@@ -40,14 +51,23 @@ module.exports = () => {
     config.mode = "development";
     config.entry = "./demo/index.ts";
   }
-  switch(process.env.TARGET) {
+  switch (process.env.BUILD_TARGET) {
     case "node":
-      config.target = "node14";
+      config.target = "node12";
       config.output.filename = "main.node.js";
       break;
-    case "webworker":
+    case "serviceworker":
       config.target = "webworker";
-      config.output.filename = "main.webworker.js";
+      config.output.filename = "main.serviceworker.js";
+      break;
+    case "deno":
+      config.target = "webworker";
+      config.output.filename = "main.deno.js";
+      break;
+    case "cfworker":
+      config.mode = "production";
+      config.target = "webworker";
+      config.output.filename = "main.cfworker.js";
       break;
     default:
       config.target = "es6";

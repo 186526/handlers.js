@@ -4,17 +4,23 @@ export const platform = (() => {
 	if (typeof process != "undefined") {
 		return "Node.js";
 	}
-	if (typeof self != "undefined") {
-		return "Web Worker";
+	if (typeof Deno != "undefined") {
+		return "Deno";
 	}
-
-	return "Unknown";
+	if (typeof self != "undefined") {
+		return "Service Worker";
+	}
+	return undefined;
 })();
 export const version = (() => {
 	switch (platform) {
 		case "Node.js":
 			return process.version;
+		case "Deno":
+			return Deno.version.deno;
+		case "Service Worker":
+			return undefined;
 		default:
-			return "Unknown";
+			return undefined;
 	}
 })();

@@ -1,14 +1,9 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
-    "lib": [
-      "ESNext",
-    ],
-    "types": [
-      "@cloudflare/workers-types",
-      "@types/node",
-    ],
+    "module": "esnext",
+    "lib": ["ESNext"],
+    "types": ["@cloudflare/workers-types", "@types/node", "@types/jest"],
     "skipLibCheck": true,
     "sourceMap": true,
     "outDir": "./dist",
@@ -28,18 +23,12 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "plugins": [
-      {
-          "transform": "@zerollup/ts-transform-paths",
-      }
-    ],
+    "plugins": [{
+      "transform": "@zerollup/ts-transform-paths"
+    }],
+    "declaration": true
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "index.ts",
-    "src/**/*.ts",
-    "demo/**/*.ts",
-  ],
+  "exclude": ["node_modules"],
+  "include": ["index.ts", "src/**/*.ts", "demo/**/*.ts", "types/deno.d.ts"],
+  // "esm": true
 }

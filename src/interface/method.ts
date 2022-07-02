@@ -56,6 +56,6 @@ export enum methodENUM {
 	ANY = "ANY",
 }
 
-export type method = methodENUM | string;
+export type method = "CONNECT" | "DELETE" | "GET" | "HEAD" | "OPTIONS" | "PATCH" | "POST" | "PUT" | "TRACE" | "ANY" | methodENUM;
 
 export default method;

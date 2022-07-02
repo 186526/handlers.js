@@ -1,5 +1,5 @@
-import { request, response } from "../interface";
-import { router } from "../../index";
+import { request, response } from "../interface/index";
+import { router } from "../router";
 
 export interface platformAdapater<T = any, K = any> {
 	router: router<T, K>;

@@ -4,6 +4,8 @@ import { response } from "../interface/response";
 import { router } from "../router";
 import { headers } from "../interface/headers";
 
+import { methodENUM } from "src/interface/method";
+
 export class SWPlatformAdapter<T = any, K = any> implements platformAdapater {
 	public router: router<T, K>;
 
@@ -22,7 +24,7 @@ export class SWPlatformAdapter<T = any, K = any> implements platformAdapater {
 			Object.fromEntries(nativeRequest.headers.entries())
 		);
 		const requestMessage: request<T> = new request(
-			nativeRequest.method,
+			<methodENUM>nativeRequest.method,
 			new URL(nativeRequest.url),
 			requestHeaders,
 			await nativeRequest.text(),

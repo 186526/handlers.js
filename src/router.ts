@@ -3,7 +3,6 @@ import {
 	path,
 	response,
 	request,
-	ChainInterrupted,
 	AllMismatchInterrupted,
 	responder,
 	method,
@@ -132,8 +131,8 @@ export class router<K = any, V = any> {
 					throw AllMismatchInterrupted;
 				}
 			} catch (e) {
-				if (e === ChainInterrupted) {
-					return e.response;
+				if (e instanceof response) {
+					throw e;
 				}
 				if (e === AllMismatchInterrupted) mismatchCount++;
 				else {
@@ -183,16 +182,16 @@ export class rootRouter<K = any, V = any> extends router<K, V> {
 	public adapater: platformAdapater<K, V>;
 	errorResponder =
 		(errorCode: number, errorMessage?: string) =>
-		async (_request: request<K>): Promise<response<V>> =>
-			new response(errorMessage ?? "", errorCode);
+			async (_request: request<K>): Promise<response<V>> =>
+				new response(errorMessage ?? "", errorCode);
 
 	respond = async (request: request<K>): Promise<response<V>> => {
 		let responseMessage: response<V> = new response("");
 		try {
 			responseMessage = await this._respond(request, responseMessage);
 		} catch (e) {
-			if (e === ChainInterrupted) {
-				return responseMessage;
+			if (e instanceof response) {
+				return e;
 			} else if (e === AllMismatchInterrupted) {
 				responseMessage =
 					(await this.errorResponder(404, "404 Not Found\n")(request)) ??
@@ -214,7 +213,8 @@ export class rootRouter<K = any, V = any> extends router<K, V> {
 	useMappingAdapter(
 		mapping: { [platform: string]: platformAdapaterConstructor } = platformAdapaterMapping
 	): this {
-		if(mapping[platform] == undefined) throw new Error("Platform not found in mapping");
+		if (typeof platform == "undefined") throw new Error("Cannot detect platform");
+		if (mapping[platform] == undefined) throw new Error("Platform not found in mapping");
 		else this.useAdapater(mapping[platform]);
 		return this;
 	}

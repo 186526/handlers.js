@@ -4,7 +4,6 @@ import {
 	handler,
 	route,
 	response,
-	ChainInterrupted,
 } from "../index";
 import errorHandler from "./errorHandler";
 
@@ -25,10 +24,18 @@ App.binding(
 	App.create(
 		"ANY",
 		(): Promise<string> =>
-			new Promise((resolve) => {
+			new Promise(() => {
 				console.log("Hello World!");
-				resolve("Hello World!");
-				throw ChainInterrupted;
+				throw new response("Hello World!");
+			})
+	)
+).binding(
+	"/(.*)",
+	App.create(
+		"ANY",
+		(): Promise<string> =>
+			new Promise((resolve) => {
+				resolve("Hello World?")
 			})
 	)
 );

@@ -1,9 +1,10 @@
 import { platformAdapater } from "./index";
-import { request, response } from "../interface";
+import { request, response } from "../interface/index";
 import { router } from "../router";
 import { headers } from "../interface/headers";
 
 import http from "http";
+import { methodENUM } from "src/interface/method";
 
 export class NodePlatformAdapter<T = any, K = any> implements platformAdapater {
 	public router: router<T, K>;
@@ -38,7 +39,7 @@ export class NodePlatformAdapter<T = any, K = any> implements platformAdapater {
 		}
 
 		let body: string = "";
-		const ip: string = nativeRequest.socket.remoteAddress?.replace("::ffff:","") ?? "0.0.0.0";
+		const ip: string = nativeRequest.socket.remoteAddress?.replace("::ffff:", "") ?? "0.0.0.0";
 		const requestHeaders = new headers(<any>nativeRequest.headers);
 
 		if (!["GET", "HEAD", "DELETE", "OPTIONS"].includes(nativeRequest.method)) {
@@ -54,7 +55,7 @@ export class NodePlatformAdapter<T = any, K = any> implements platformAdapater {
 		}
 
 		return new request<T>(
-			nativeRequest.method,
+			<methodENUM>nativeRequest.method,
 			new URL(
 				nativeRequest.url,
 				`http://${requestHeaders.get("host") ?? "localhost"}`
