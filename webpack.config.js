@@ -81,6 +81,10 @@ export default () => {
           'Promise': 'bluebird'
         })
       )
+    case "deno:test":
+      config.target = "webworker";
+      config.output.filename = "test.deno.js";
+      config.entry = "./test/test-server.deno.ts";
     default:
       config.target = "es6";
   }

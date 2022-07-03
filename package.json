@@ -46,7 +46,8 @@
     "clean": "rm -rf ./dist",
     "demo": "env NODE_ENV=development yarn build:node && node ./dist/main.node.js",
     "tsc": "tsc",
-    "test": "jest",
+    "test:node": "jest ./test/node.test.ts",
+    "test:deno": "BUILD_TARGET=deno:test webpack && jest ./test/deno.test.ts",
     "coverage": "jest --collectCoverage --"
   },
   "engines": {

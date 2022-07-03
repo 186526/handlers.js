@@ -35,6 +35,7 @@ export class SWPlatformAdapter<T = any, K = any> implements platformAdapater {
 	}
 
 	async handleResponse(response: response<K>): Promise<Response> {
+		if (response.status === 204) { response.body = null; }
 		const nativResponse = new Response(response.body, {
 			status: response.status,
 			headers: response.headers.headers,

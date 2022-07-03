@@ -3,7 +3,7 @@ name: CI
 on: push
 
 jobs:
-  build:
+  node:
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,11 +12,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Install dependencies
         run: yarn install
+
       - name: Test handlers.js
-        run: yarn test
+        run: yarn test:node
+
+  deno:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js Latest
+        uses: actions/setup-node@v3
+        with:
+          node-version: vx.x.x
+
+      - name: Install dependencies
+        run: yarn install
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Test handlers.js
+        run: yarn test:deno

@@ -10,26 +10,33 @@ interface matchedStatus {
 	}[];
 }
 
+interface regExpKey {
+	name: string;
+	prefix: string;
+	suffix: string;
+	pattern: string;
+	modifier: string;
+};
+
 export class route {
-	public paths: path[];
+	private paths: path[];
 	public handlers: handler<any, any>[];
+	private regExps: { regExp: RegExp, keys: regExpKey[] }[] = [];
 
 	constructor(paths: path[], handlers: handler<any, any>[]) {
 		this.paths = paths;
 		this.handlers = handlers;
+
+		this.paths.forEach(path => {
+			const keys: regExpKey[] = [];
+			this.regExps.push({ regExp: pathToRegexp(path, keys), keys });
+		})
 	}
 	async exec(path: string): Promise<matchedStatus> {
 		let Answer = await Promise.all<Promise<matchedStatus>>(
-			this.paths.map(async (it) => {
-				const keys: {
-					name: string;
-					prefix: string;
-					suffix: string;
-					pattern: string;
-					modifier: string;
-				}[] = [];
-				const regExp = pathToRegexp(it, keys);
-				const answer = regExp.exec(path);
+			this.regExps.map(async (it) => {
+
+				const answer = it.regExp.exec(path);
 				if (answer === null)
 					return {
 						matched: false,
@@ -38,7 +45,7 @@ export class route {
 
 				let attributes: matchedStatus["attributes"] = [];
 
-				keys.forEach((key, index) => {
+				it.keys.forEach((key, index) => {
 					attributes.push({
 						name: key.name,
 						value: answer[index + 1],
