@@ -8,6 +8,8 @@ const __dirname = path.dirname(__filename);
 
 const isProduction = process.env.NODE_ENV == "production";
 
+import webpack from "webpack";
+
 const config = {
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -35,7 +37,8 @@ const config = {
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", "..."],
     fallback: {
-      "http": false
+      "http": false,
+      "async_hooks": false,
     }
   },
   experiments: {
@@ -69,6 +72,15 @@ export default () => {
       config.target = "webworker";
       config.output.filename = "main.cfworker.js";
       break;
+    case "txiki":
+      config.mode = "production";
+      config.target = "es2021";
+      config.output.filename = "main.txiki.js";
+      config.plugins.push(
+        new webpack.ProvidePlugin({
+          'Promise': 'bluebird'
+        })
+      )
     default:
       config.target = "es6";
   }

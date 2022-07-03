@@ -7,6 +7,9 @@ export const platform = (() => {
 	if (typeof Deno != "undefined") {
 		return "Deno";
 	}
+	if (typeof tjs != "undefined") {
+		return "txiki.js";
+	}
 	if (typeof self != "undefined") {
 		return "Service Worker";
 	}
@@ -18,6 +21,8 @@ export const version = (() => {
 			return process.version;
 		case "Deno":
 			return Deno.version.deno;
+		case "txiki.js":
+			return tjs.versions.tjs;
 		case "Service Worker":
 			return undefined;
 		default:

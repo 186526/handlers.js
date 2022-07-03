@@ -29,6 +29,6 @@
     "declaration": true
   },
   "exclude": ["node_modules"],
-  "include": ["index.ts", "src/**/*.ts", "demo/**/*.ts", "types/deno.d.ts"],
+  "include": ["index.ts", "src/**/*.ts", "demo/**/*.ts", "types/*.d.ts"],
   // "esm": true
 }
