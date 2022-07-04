@@ -15,3 +15,12 @@ App.binding(
 App.useMappingAdapter();
 App.listen(8080);
 ```
+
+## Installation
+
+```bash
+# Use Yarn
+yarn add sw2express
+# Use NPM
+npm install sw2express
+```

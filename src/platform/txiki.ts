@@ -2,7 +2,7 @@ import { platformAdapater } from "./index";
 import { request } from "../interface/request";
 import { response } from "../interface/response";
 import { router } from "../router";
-import serveHttp from "./txiki.js/serveHttp";
+import serveHttp from "./txiki-js/serveHttp";
 
 export class TxikiPlatformAdapter<T = any, K = any> implements platformAdapater {
     public router: router<T, K>;

@@ -2,7 +2,13 @@
   "name": "handlers.js",
   "description": "Handlers.js is a unified and lightweight web application framework for multiple platforms.",
   "version": "0.0.1",
-  "main": "index.ts",
+  "main": "./dit/main.node.js",
+  "webpack": "./dist/index.js",
+  "browser": "./dist/main.serviceworker.js",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "author": "186526 <i@186526.xyz>",
   "license": "MIT",
   "repository": {
@@ -48,7 +54,8 @@
     "tsc": "tsc",
     "test:node": "jest ./test/node.test.ts",
     "test:deno": "BUILD_TARGET=deno:test webpack && jest ./test/deno.test.ts",
-    "coverage": "jest --collectCoverage --"
+    "coverage": "jest --collectCoverage --",
+    "prepublish": "env NODE_ENV=production yarn build && yarn tsc"
   },
   "engines": {
     "node": ">=14.0.0"

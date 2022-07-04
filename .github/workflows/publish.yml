@@ -1,0 +1,39 @@
+name: release
+on:
+  release:
+    types: [created]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - name: Validate and extract release information
+        id: release
+        uses: manovotny/github-releases-for-automated-package-publishing-action@v1.0.0
+
+      - name: Set node version
+        uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          node-version: vx.x.x
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Publish tagged version
+        if: steps.release.outputs.tag != ''
+        run: yarn publish --new-version ${{ steps.release.outputs.version }} --tag ${{ steps.release.outputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # This will publish a version of a package.
+      - name: Publish version
+        if: steps.release.outputs.tag == ''
+        run: yarn publish --new-version ${{ steps.release.outputs.version }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
