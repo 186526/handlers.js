@@ -3,7 +3,7 @@
 > Handlers.js is a unified and lightweight web application framework for multiple platforms.
 
 ```ts
-import handlerJS from "./";
+import handlerJS from "handlers.js";
 
 const App = new handlerJS();
 
@@ -20,7 +20,7 @@ App.listen(8080);
 
 ```bash
 # Use Yarn
-yarn add sw2express
+yarn add handlers.js
 # Use NPM
-npm install sw2express
+npm install handlers.js
 ```

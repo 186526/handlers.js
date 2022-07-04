@@ -1,10 +1,11 @@
 {
   "name": "handlers.js",
   "description": "Handlers.js is a unified and lightweight web application framework for multiple platforms.",
-  "version": "0.0.1",
-  "main": "./dit/main.node.js",
+  "version": "0.1.0",
+  "main": "./dist/main.node.js",
   "webpack": "./dist/index.js",
   "browser": "./dist/main.serviceworker.js",
+  "module": "./dist/index.js",
   "files": [
     "dist",
     "LICENSE"
