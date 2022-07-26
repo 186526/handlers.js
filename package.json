@@ -1,11 +1,12 @@
 {
   "name": "handlers.js",
   "description": "Handlers.js is a unified and lightweight web application framework for multiple platforms.",
-  "version": "0.1.0",
-  "main": "./dist/main.node.js",
+  "version": "0.1.1",
+  "main": "./dist/index.js",
   "webpack": "./dist/index.js",
   "browser": "./dist/main.serviceworker.js",
   "module": "./dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "LICENSE"
@@ -32,6 +33,7 @@
     "@webpack-cli/generators": "^2.5.0",
     "axios": "^0.27.2",
     "bluebird": "^3.7.2",
+    "bun-types": "^0.1.4",
     "jest": "^28.1.2",
     "prettier": "^2.7.1",
     "ts-jest": "^28.0.5",
@@ -43,12 +45,13 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "yarn clean && yarn build:node && yarn build:serviceworker && yarn build:cfworker && yarn build:deno && yarn build:txiki",
+    "build": "yarn clean && yarn build:node && yarn build:serviceworker && yarn build:cfworker && yarn build:deno && yarn build:txiki && yarn build:bun",
     "build:node": "BUILD_TARGET=node webpack",
     "build:serviceworker": "BUILD_TARGET=serviceworker webpack",
     "build:cfworker": "BUILD_TARGET=cfworker webpack",
     "build:deno": "BUILD_TARGET=deno webpack",
     "build:txiki": "BUILD_TARGET=txiki webpack",
+    "build:bun": "BUILD_TARGET=bun webpack",
     "watch": "webpack --watch",
     "clean": "rm -rf ./dist",
     "demo": "env NODE_ENV=development yarn build:node && node ./dist/main.node.js",

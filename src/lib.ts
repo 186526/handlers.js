@@ -7,6 +7,9 @@ export const platform = (() => {
 	if (typeof Deno != "undefined") {
 		return "Deno";
 	}
+	if (typeof Bun != "undefined") {
+		return "Bun";
+	}
 	if (typeof tjs != "undefined") {
 		return "txiki.js";
 	}
@@ -17,7 +20,7 @@ export const platform = (() => {
 })();
 export const version = (() => {
 	switch (platform) {
-		case "Node.js":
+		case "Node.js" || "Bun":
 			return process.version;
 		case "Deno":
 			return Deno.version.deno;

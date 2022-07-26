@@ -81,12 +81,20 @@ export default () => {
           'Promise': 'bluebird'
         })
       )
+      break;
+    case "bun":
+      config.mode = "production";
+      config.target = "node12";
+      config.output.filename = "main.bun.js";
+      break;
     case "deno:test":
       config.target = "webworker";
       config.output.filename = "test.deno.js";
       config.entry = "./test/test-server.deno.ts";
+      break;
     default:
       config.target = "es6";
+      break;
   }
 
   return config;
