@@ -35,6 +35,7 @@ export class handler<RequestCustomType, ResponseCustomType> {
 						responseMessage = thisResponse;
 					}
 				}
+				return responseMessage;
 		}
 	}
 }
