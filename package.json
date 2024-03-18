@@ -1,7 +1,7 @@
 {
 	"name": "handlers.js",
 	"description": "Handlers.js is a unified and lightweight web application framework for multiple platforms.",
-	"version": "0.1.1-1",
+	"version": "0.1.1-2",
 	"main": "./dist/index.js",
 	"webpack": "./dist/index.js",
 	"browser": "./dist/main.serviceworker.js",
@@ -62,7 +62,7 @@
 		"prepublish": "env NODE_ENV=production yarn build && yarn tsc"
 	},
 	"engines": {
-		"node": ">=14.0.0"
+		"node": ">=18.0.0"
 	},
 	"type": "module"
 }
