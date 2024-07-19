@@ -1,9 +1,9 @@
-import { request } from "../../interface/request";
-import { response } from "../../interface";
-import { headers } from "../../interface/headers";
-import { methodENUM } from "../../interface/method";
+import { request } from '../../interface/request';
+import { response } from '../../interface';
+import { headers } from '../../interface/headers';
+import { methodENUM } from '../../interface/method';
 
-import statusCode from "./statusCode.json";
+import statusCode from './statusCode.json';
 
 export class HttpConn {
     private closed: boolean = false;
@@ -16,44 +16,63 @@ export class HttpConn {
     }
 
     private readMessage(httpMessage: string): request<any> {
-        const lines = httpMessage.split("\n");
+        const lines = httpMessage.split('\n');
         const firstLine = lines[0];
-        const dividingIndex = lines.indexOf("\r") ?? lines.indexOf("");
+        const dividingIndex = lines.indexOf('\r') ?? lines.indexOf('');
         const rawHeaders = lines.slice(1, dividingIndex);
 
-        const [method, path, version] = firstLine.split(" ");
+        const [method, path, version] = firstLine.split(' ');
+
+        if (version in ['HTTP/1.1', 'HTTP/1.0', 'HTTP/0.9']) {
+            this.conn.close();
+        }
 
         const requestHeaders = new headers({});
         for (const header of rawHeaders) {
-            const [key, value] = header.split(": ");
+            const [key, value] = header.split(': ');
             requestHeaders.set(key, value);
         }
 
-        const url = new URL(path, `http://${requestHeaders.get("Host")}/` ?? `http://${this.conn.localAddress.ip}:${this.conn.localAddress.port}/`);
+        const url = new URL(
+            path,
+            `http://${requestHeaders.get('Host')}/` ??
+                `http://${this.conn.localAddress.ip}:${this.conn.localAddress.port}/`,
+        );
 
-        const body = lines.slice(dividingIndex + 1).join("\n");
+        const body = lines.slice(dividingIndex + 1).join('\n');
 
-        const requestMessage = new request<any>(<methodENUM>method, url, requestHeaders, body, {}, this.conn.remoteAddress.ip);
+        const requestMessage = new request<any>(
+            <methodENUM>method,
+            url,
+            requestHeaders,
+            body,
+            {},
+            this.conn.remoteAddress.ip,
+        );
         return requestMessage;
     }
 
     private handleResponse(response: response<any>) {
-        let responseMessage: string = "";
-        responseMessage += "HTTP/1.1 " + response.status + " " + statusCode[<"100">response.status.toString()] ?? "";
+        let responseMessage: string = '';
+        responseMessage +=
+            'HTTP/1.1 ' +
+                response.status +
+                ' ' +
+                statusCode[<'100'>response.status.toString()] ?? '';
 
         response.headers.forEach((key, value) => {
-            responseMessage += "\n" + key + ": " + value;
+            responseMessage += '\n' + key + ': ' + value;
         });
 
-        responseMessage += "\n\n" + response.body;
+        responseMessage += '\n\n' + response.body;
 
         this.conn.write(new TextEncoder().encode(responseMessage));
-        this.conn.shutdown();
+        this.conn.close();
         this.closed = true;
     }
 
     private async read(): Promise<request<any> | undefined> {
-        let message = "";
+        let message = '';
         const { done, value } = await this.reader.read();
 
         if (done || this.closed) {
@@ -61,9 +80,15 @@ export class HttpConn {
             return undefined;
         }
 
-        message += String.fromCharCode(...Object.values(<{
-            [key: string]: number
-        }>value));
+        message += String.fromCharCode(
+            ...Object.values(
+                <
+                    {
+                        [key: string]: number;
+                    }
+                >value,
+            ),
+        );
 
         const requestMessage = this.readMessage(message);
         return requestMessage;
@@ -82,10 +107,10 @@ export class HttpConn {
                         respondWith: (response: response<any>) => {
                             httpConn.handleResponse(response);
                         },
-                    }
-                }
-            }
-        }
+                    },
+                };
+            },
+        };
     }
 }
 

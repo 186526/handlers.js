@@ -1,26 +1,25 @@
-import { SWPlatformAdapter } from "./serviceworker";
-import { platformAdapater } from "./index";
+import { SWPlatformAdapter } from './serviceworker';
+import { platformAdapater } from './index';
 
-import { request } from "../interface/request";
-import { headers } from "../interface/headers";
-import { methodENUM } from "src/interface/method";
-
+import { request } from '../interface/request';
+import { headers } from '../interface/headers';
+import { methodENUM } from 'src/interface/method';
 
 const DefaultConn: Deno.Conn = {
     localAddr: {
-        transport: "tcp",
-        hostname: "0.0.0.0",
+        transport: 'tcp',
+        hostname: '0.0.0.0',
         port: 80,
     },
     remoteAddr: {
-        transport: "tcp",
-        hostname: "0.0.0.0",
+        transport: 'tcp',
+        hostname: '0.0.0.0',
         port: 80,
     },
     rid: 0,
     closeWrite: async () => undefined,
-    readable: "",
-    writable: "",
+    readable: '',
+    writable: '',
     read: async (p: Uint8Array) => null,
     write: async (p: Uint8Array) => 0,
     close: () => undefined,
@@ -37,14 +36,19 @@ export class DenoPlatformAdapter<T = any, K = any>
             const httpConnection = Deno.serveHttp(connection);
 
             for await (const requestEvent of httpConnection) {
-                requestEvent.respondWith(this.handler(requestEvent, connection));
+                requestEvent.respondWith(
+                    this.handler(requestEvent, connection),
+                );
             }
         }
     }
 
-    async handleRequest(nativeRequest: Request, connection: Deno.Conn = DefaultConn): Promise<request<T>> {
+    async handleRequest(
+        nativeRequest: Request,
+        connection: Deno.Conn = DefaultConn,
+    ): Promise<request<T>> {
         const requestHeaders = new headers(
-            Object.fromEntries(nativeRequest.headers.entries())
+            Object.fromEntries(nativeRequest.headers.entries()),
         );
         const requestMessage: request<T> = new request(
             <methodENUM>nativeRequest.method,
@@ -52,16 +56,20 @@ export class DenoPlatformAdapter<T = any, K = any>
             requestHeaders,
             await nativeRequest.text(),
             {},
-            `${connection.remoteAddr.hostname}:${connection.remoteAddr.port}` || ""
+            `${connection.remoteAddr.hostname}:${connection.remoteAddr.port}` ||
+                '',
         );
         return requestMessage;
     }
 
-    async handler(event: FetchEvent, connection: Deno.Conn = DefaultConn): Promise<Response> {
+    async handler(
+        event: FetchEvent,
+        connection: Deno.Conn = DefaultConn,
+    ): Promise<Response> {
         return await this.handleResponse(
-            await this.handleRequest(event.request, connection).then((request) =>
-                this.router.respond(request)
-            )
-        )
+            await this.handleRequest(event.request, connection).then(
+                (request) => this.router.respond(request),
+            ),
+        );
     }
 }

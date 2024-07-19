@@ -1,7 +1,7 @@
-type Transport = "tcp" | "udp" | "pipe";
+type Transport = 'tcp' | 'udp' | 'pipe';
 
 interface ListenOptions {
-    backlog?: number
+    backlog?: number;
     // Disables dual stack mode.
     ipv6Only?: boolean;
     // Used on UDP only. Enable address reusing (when binding). What that means is that multiple threads or processes can bind to the same address without error (provided they all set the flag) but only the last one to bind will receive any traffic, in effect "stealing" the port from the previous listener.
@@ -9,7 +9,13 @@ interface ListenOptions {
 }
 
 declare namespace tjs {
-    const versions: { curl: string; quickjs: string; tjs: string; uv: string; wasm3: string };
+    const versions: {
+        curl: string;
+        quickjs: string;
+        tjs: string;
+        uv: string;
+        wasm3: string;
+    };
 
     export interface Address {
         readonly family: number;
@@ -24,15 +30,15 @@ declare namespace tjs {
         readonly readable: ReadableStream<Uint8Array>;
 
         readonly remoteAddress: Address;
-        readonly writeable: WritableStream<Uint8Array>
+        readonly writeable: WritableStream<Uint8Array>;
 
-        close(): void
-        read(buf: Uint8Array): Promise<number>
-        write(buf: Uint8Array): Promise<number>
+        close(): void;
+        read(buf: Uint8Array): Promise<number>;
+        write(buf: Uint8Array): Promise<number>;
 
-        setKeepAlive(enable?: boolean): void
-        setNoDelay(enable?: boolean): void
-        shutdown(): void
+        setKeepAlive(enable?: boolean): void;
+        setNoDelay(enable?: boolean): void;
+        shutdown(): void;
     }
 
     export interface Listener extends AsyncIterable<Connection> {
@@ -48,6 +54,6 @@ declare namespace tjs {
         transport: Transport,
         host: string,
         port?: string | number,
-        options?: ListenOptions
-    ): Promise<Listener>
+        options?: ListenOptions,
+    ): Promise<Listener>;
 }
