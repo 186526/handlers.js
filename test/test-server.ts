@@ -7,6 +7,20 @@ App.binding(
     App.create('GET', async () => '200 OK'),
 );
 
+const dynamicHandler = new handlersJS.handler('GET', [
+    async () => new handlersJS.response('miss'),
+]);
+
+App.binding('/handler', dynamicHandler);
+
+App.binding(
+    '/handler/add',
+    App.create('GET', async () => {
+        dynamicHandler.add(async () => new handlersJS.response('hit'));
+        return 'added';
+    }),
+);
+
 App.binding(
     '/post',
     App.create(

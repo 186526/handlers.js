@@ -59,4 +59,25 @@ describe('Test server', () => {
         expect(status).toEqual(200);
         expect(data).toEqual('hit');
     });
+
+    test('dynamic handler', async () => {
+        expect.assertions(6);
+
+        const { status: firstStatus, data: firstData } = await Instance.get(
+            `/handler`,
+        );
+
+        const { data, status } = await Instance.get(`/handler/add`);
+
+        const { status: secondStatus, data: secondData } = await Instance.get(
+            `/handler`,
+        );
+
+        expect(firstStatus).toEqual(200);
+        expect(firstData).toEqual('miss');
+        expect(status).toEqual(200);
+        expect(data).toEqual('added');
+        expect(secondStatus).toEqual(200);
+        expect(secondData).toEqual('hit');
+    });
 });

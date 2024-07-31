@@ -23,7 +23,7 @@ export class HttpConn {
 
         const [method, path, version] = firstLine.split(' ');
 
-        if (version in ['HTTP/1.1', 'HTTP/1.0', 'HTTP/0.9']) {
+        if (!(version in ['HTTP/1.1', 'HTTP/1.0', 'HTTP/0.9'])) {
             this.conn.close();
         }
 
