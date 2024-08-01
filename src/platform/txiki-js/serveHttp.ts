@@ -3,7 +3,7 @@ import { response } from '../../interface';
 import { headers } from '../../interface/headers';
 import { methodENUM } from '../../interface/method';
 
-import statusCode from './statusCode.json';
+import statusCode from './statusCode.json' assert { type: 'json' };
 
 export class HttpConn {
     private closed: boolean = false;
@@ -35,8 +35,10 @@ export class HttpConn {
 
         const url = new URL(
             path,
-            `http://${requestHeaders.get('Host')}/` ??
-                `http://${this.conn.localAddress.ip}:${this.conn.localAddress.port}/`,
+            `http://${
+                requestHeaders.get('Host') ??
+                `${this.conn.localAddress.ip}:${this.conn.localAddress.port}`
+            }/`,
         );
 
         const body = lines.slice(dividingIndex + 1).join('\n');
@@ -56,9 +58,9 @@ export class HttpConn {
         let responseMessage: string = '';
         responseMessage +=
             'HTTP/1.1 ' +
-                response.status +
-                ' ' +
-                statusCode[<'100'>response.status.toString()] ?? '';
+            response.status +
+            ' ' +
+            (statusCode[<'100'>response.status.toString()] ?? '');
 
         response.headers.forEach((key, value) => {
             responseMessage += '\n' + key + ': ' + value;
@@ -95,6 +97,7 @@ export class HttpConn {
     }
 
     [Symbol.asyncIterator]() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const httpConn = this;
 
         return {

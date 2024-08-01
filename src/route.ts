@@ -42,7 +42,7 @@ export class route {
                         attributes: [],
                     };
 
-                let attributes: matchedStatus['attributes'] = [];
+                const attributes: matchedStatus['attributes'] = [];
 
                 it.keys.forEach((key, index) => {
                     attributes.push({

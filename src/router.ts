@@ -98,7 +98,7 @@ export class router<K = any, V = any> {
 
         let mismatchCount = 0;
 
-        for (let route of this.routes) {
+        for (const route of this.routes) {
             const isMatched = await route.exec(request.url.pathname);
 
             if (!isMatched.matched) {
@@ -112,7 +112,7 @@ export class router<K = any, V = any> {
 
             try {
                 let thisResponse: response<V> | void = responseMessage;
-                for (let handler of route.handlers) {
+                for (const handler of route.handlers) {
                     if (
                         handler.method != request.method &&
                         handler.method != methodENUM.ANY

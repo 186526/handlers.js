@@ -3,10 +3,15 @@
     "description": "Handlers.js is a unified and lightweight web application framework for multiple platforms.",
     "version": "0.1.2",
     "main": "./dist/index.js",
-    "webpack": "./dist/index.js",
-    "browser": "./dist/main.serviceworker.js",
-    "module": "./dist/index.js",
-    "types": "dist/index.d.ts",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.node.js",
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
     "files": [
         "dist",
         "LICENSE"
@@ -24,16 +29,19 @@
         "unified"
     ],
     "dependencies": {
-        "path-to-regexp": "^6.2.1"
+        "path-to-regexp": "6"
     },
     "devDependencies": {
         "@cloudflare/workers-types": "^3.13.0",
+        "@eslint/js": "^9.8.0",
         "@types/jest": "^28.1.4",
         "@types/node": "^18.0.0",
         "@webpack-cli/generators": "^2.5.0",
         "axios": "^0.27.2",
         "bluebird": "^3.7.2",
         "bun-types": "^0.1.4",
+        "eslint": "9.x",
+        "globals": "^15.8.0",
         "jest": "^28.1.2",
         "prettier": "^2.7.1",
         "ts-jest": "^28.0.5",
@@ -41,6 +49,7 @@
         "ts-node": "^10.8.1",
         "tsc-alias": "^1.8.10",
         "typescript": "^4.7.4",
+        "typescript-eslint": "^8.0.0",
         "webpack": "^5.73.0",
         "webpack-cli": "^4.10.0"
     },
@@ -57,6 +66,7 @@
         "clean": "rm -rf ./dist",
         "demo": "env NODE_ENV=development yarn build:node && node ./dist/main.node.js",
         "tsc": "tsc && tsc-alias",
+        "lint": "eslint --fix **/*.ts",
         "test:node": "jest ./test/node.test.ts",
         "test:deno": "BUILD_TARGET=deno:test webpack && jest ./test/deno.test.ts",
         "coverage": "jest --collectCoverage --",

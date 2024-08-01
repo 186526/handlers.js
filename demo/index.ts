@@ -6,7 +6,7 @@ const App = new rootRouter<any, any>();
 App.binding(
     '/(.*)',
     new handler('ANY', [
-        async (request, response) => {
+        async (request, _response) => {
             console.log(request);
             return undefined;
         },

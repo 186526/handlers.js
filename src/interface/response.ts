@@ -1,5 +1,5 @@
 import headers from './headers';
-import packageJSON from '../../package.json';
+import packageJSON from '../../package.json' assert { type: 'json' };
 import { platform, version } from '../lib';
 
 export class defaultHeaders extends headers {

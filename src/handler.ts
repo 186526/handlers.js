@@ -29,8 +29,8 @@ export class handler<RequestCustomType, ResponseCustomType> {
             case 1:
                 return this.responders[0](request, responseMessage);
             default:
-                for (let responder of this.responders) {
-                    let thisResponse = await responder(
+                for (const responder of this.responders) {
+                    const thisResponse = await responder(
                         request,
                         responseMessage,
                     );

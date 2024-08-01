@@ -20,7 +20,9 @@ export const platform = (() => {
 })();
 export const version = (() => {
     switch (platform) {
-        case 'Node.js' || 'Bun':
+        case 'Node.js':
+            return process.version;
+        case 'Bun':
             return process.version;
         case 'Deno':
             return Deno.version.deno;

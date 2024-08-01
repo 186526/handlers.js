@@ -45,7 +45,7 @@ App.route('/info/(.*)')
         App.create(
             'GET',
             (): Promise<handlersJS.response<any>> =>
-                new Promise((resolve) => {
+                new Promise(() => {
                     throw new handlersJS.response('hit');
                 }),
         ),
