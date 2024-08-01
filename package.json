@@ -1,7 +1,7 @@
 {
     "name": "handlers.js",
     "description": "Handlers.js is a unified and lightweight web application framework for multiple platforms.",
-    "version": "0.1.2",
+    "version": "0.1.2-1",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "exports": {
@@ -42,9 +42,9 @@
         "bun-types": "^0.1.4",
         "eslint": "9.x",
         "globals": "^15.8.0",
-        "jest": "^28.1.2",
+        "jest": "^29.7.0",
         "prettier": "^2.7.1",
-        "ts-jest": "^28.0.5",
+        "ts-jest": "^29.2.4",
         "ts-loader": "^9.3.1",
         "ts-node": "^10.8.1",
         "tsc-alias": "^1.8.10",
@@ -67,9 +67,9 @@
         "demo": "env NODE_ENV=development yarn build:node && node ./dist/main.node.js",
         "tsc": "tsc && tsc-alias",
         "lint": "eslint --fix **/*.ts",
-        "test:node": "jest ./test/node.test.ts",
+        "test:node": "NODE_OPTIONS=--experimental-vm-modules jest ./test/node.test.ts",
         "test:deno": "BUILD_TARGET=deno:test webpack && jest ./test/deno.test.ts",
-        "coverage": "jest --collectCoverage --",
+        "coverage": "ODE_OPTIONS=--experimental-vm-modules jest --collectCoverage --",
         "prepublish": "env NODE_ENV=production yarn build && yarn tsc",
         "format": "prettier --write \"**/*.{ts,json,md}\" "
     },

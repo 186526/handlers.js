@@ -8,14 +8,16 @@ import { methodENUM } from 'src/interface/method';
 
 export class NodePlatformAdapter<T = any, K = any> implements platformAdapater {
     public router: router<T, K>;
+    public server: http.Server;
 
-    constructor(router: router<T, K>) {
+    constructor(router: router<T, K>, server?: http.Server) {
         this.router = router;
+        if (server) this.server = server;
+        else this.server = http.createServer();
     }
 
     async listen(port: number): Promise<void> {
-        const server = http.createServer();
-        server.on(
+        this.server.on(
             'request',
             async (req: http.IncomingMessage, res: http.ServerResponse) => {
                 const request = await this.handleRequest(req);
@@ -23,8 +25,11 @@ export class NodePlatformAdapter<T = any, K = any> implements platformAdapater {
                 this.handleResponse(response, res);
             },
         );
-        server.listen(port);
-        return;
+        this.server.listen(port);
+    }
+
+    close() {
+        this.server.close();
     }
 
     async handleRequest(

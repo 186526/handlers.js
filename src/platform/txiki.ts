@@ -8,15 +8,16 @@ export class TxikiPlatformAdapter<T = any, K = any>
     implements platformAdapater
 {
     public router: router<T, K>;
+    public server: tjs.Listener;
 
     constructor(router: router<T, K>) {
         this.router = router;
     }
 
     async listen(port?: number): Promise<void> {
-        const Server = await tjs.listen('tcp', '0.0.0.0', port);
+        this.server = await tjs.listen('tcp', '0.0.0.0', port);
 
-        for await (const conn of Server) {
+        for await (const conn of this.server) {
             const httpConn = serveHttp(conn);
 
             for await (const conn of httpConn) {
@@ -29,6 +30,10 @@ export class TxikiPlatformAdapter<T = any, K = any>
                 conn.respondWith(await this.router.respond(conn.request));
             }
         }
+    }
+
+    close() {
+        this.server.close();
     }
 
     async handleRequest(nativeRequest: request<any>): Promise<request<T>> {

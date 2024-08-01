@@ -8,15 +8,20 @@ import { methodENUM } from 'src/interface/method';
 
 export class SWPlatformAdapter<T = any, K = any> implements platformAdapater {
     public router: router<T, K>;
+    private eventHandler = (event: FetchEvent) => {
+        event.respondWith(this.handler(event));
+    };
 
     constructor(router: router<T, K>) {
         this.router = router;
     }
 
     async listen(_port?: number): Promise<void> {
-        self.addEventListener('fetch', (event: FetchEvent) => {
-            event.respondWith(this.handler(event));
-        });
+        self.addEventListener('fetch', this.eventHandler);
+    }
+
+    close() {
+        self.removeEventListener('fetch', this.eventHandler);
     }
 
     async handleRequest(nativeRequest: Request): Promise<request<T>> {

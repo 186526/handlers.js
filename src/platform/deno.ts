@@ -20,8 +20,8 @@ const DefaultConn: Deno.Conn = {
     closeWrite: async () => undefined,
     readable: '',
     writable: '',
-    read: async (p: Uint8Array) => null,
-    write: async (p: Uint8Array) => 0,
+    read: async (_p: Uint8Array) => null,
+    write: async (_p: Uint8Array) => 0,
     close: () => undefined,
 };
 
@@ -29,10 +29,12 @@ export class DenoPlatformAdapter<T = any, K = any>
     extends SWPlatformAdapter<T, K>
     implements platformAdapater<T, K>
 {
-    async listen(port: number): Promise<void> {
-        const Server: Deno.Listener = Deno.listen({ port });
+    public server: Deno.Listener;
 
-        for await (const connection of Server) {
+    async listen(port: number): Promise<void> {
+        this.server = Deno.listen({ port });
+
+        for await (const connection of this.server) {
             const httpConnection = Deno.serveHttp(connection);
 
             for await (const requestEvent of httpConnection) {
@@ -41,6 +43,10 @@ export class DenoPlatformAdapter<T = any, K = any>
                 );
             }
         }
+    }
+
+    close() {
+        this.server.close();
     }
 
     async handleRequest(
@@ -56,8 +62,9 @@ export class DenoPlatformAdapter<T = any, K = any>
             requestHeaders,
             await nativeRequest.text(),
             {},
-            `${connection.remoteAddr.hostname}:${connection.remoteAddr.port}` ||
-                '',
+            `${connection.remoteAddr.hostname ?? '0.0.0.0'}:${
+                connection.remoteAddr.port ?? '0'
+            }`,
         );
         return requestMessage;
     }

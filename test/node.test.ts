@@ -81,3 +81,8 @@ describe('Test server', () => {
         expect(secondData).toEqual('hit');
     });
 });
+
+afterAll((done) => {
+    _.close();
+    done();
+});

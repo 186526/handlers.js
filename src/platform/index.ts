@@ -4,6 +4,7 @@ import { router } from '../router';
 export interface platformAdapater<T = any, K = any> {
     router: router<T, K>;
     listen(port: number): void;
+    close(): void;
     handleRequest(nativeRequest: any): Promise<request<T>>;
     handleResponse(
         response: response<K> | Promise<response<K>>,

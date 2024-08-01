@@ -215,10 +215,12 @@ export class rootRouter<K = any, V = any> extends router<K, V> {
 
         return responseMessage;
     };
+
     useAdapater(adapater: platformAdapaterConstructor): this {
         this.adapater = createPlatformAdapater(adapater, this);
         return this;
     }
+
     useMappingAdapter(
         mapping: {
             [platform: string]: platformAdapaterConstructor;
@@ -231,8 +233,14 @@ export class rootRouter<K = any, V = any> extends router<K, V> {
         else this.useAdapater(mapping[platform]);
         return this;
     }
+
     listen(port: number): void {
         if (this.adapater == null) throw new Error('No platform adapter set');
         this.adapater.listen(port);
+    }
+
+    close(): void {
+        if (this.adapater == null) throw new Error('No platform adapter set');
+        this.adapater.close();
     }
 }

@@ -1,10 +1,8 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "lib": [
-            "ESNext"
-        ],
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": ["ESNext"],
         "types": [
             "@cloudflare/workers-types",
             "@types/node",
@@ -37,15 +35,8 @@
         ],
         "declaration": true
     },
-    "exclude": [
-        "node_modules"
-    ],
-    "include": [
-        "index.ts",
-        "src/**/*.ts",
-        "demo/**/*.ts",
-        "types/*.d.ts"
-    ],
+    "exclude": ["node_modules"],
+    "include": ["index.ts", "src/**/*.ts", "demo/**/*.ts", "types/*.d.ts"],
     "tsc-alias": {
         "resolveFullPaths": true,
         "verbose": true
