@@ -74,7 +74,7 @@
         "format": "prettier --write \"**/*.{ts,json,md}\" "
     },
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=22.0.0"
     },
     "type": "module",
     "packageManager": "yarn@1.22.22"

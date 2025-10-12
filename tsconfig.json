@@ -28,6 +28,7 @@
         "experimentalDecorators": true,
         "resolveJsonModule": true,
         "baseUrl": ".",
+        "ignoreDeprecations": "6.0",
         "plugins": [
             {
                 "transform": "@zerollup/ts-transform-paths"
