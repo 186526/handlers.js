@@ -3,7 +3,7 @@ import { response } from '../../interface';
 import { headers } from '../../interface/headers';
 import { methodENUM } from '../../interface/method';
 
-import statusCode from './statusCode.json' assert { type: 'json' };
+import statusCode from './statusCode.json';
 
 export class HttpConn {
     private closed: boolean = false;
